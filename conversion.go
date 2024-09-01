@@ -114,3 +114,25 @@ func HangulToQwerty(input string) string {
 
 	return convertedString.String()
 }
+
+// 쿼티 converts a string of QWERTY keyboard inputs to their corresponding Hangul characters.
+// This is an alias for QwertyToHangul for Korean-speaking users.
+//
+// Example usage:
+//
+//	result := 쿼티("rkskekfk")
+//	fmt.Println(result) // Output: "가나다라"
+func 쿼티(qwerty string) string {
+	return QwertyToHangul(qwerty)
+}
+
+// 한글 converts a string of Hangul characters into their corresponding QWERTY keyboard inputs.
+// This is an alias for HangulToQwerty for Korean-speaking users.
+//
+// Example usage:
+//
+//	result := 한글("안녕")
+//	fmt.Println(result) // Output: "dkssud"
+func 한글(hangul string) string {
+	return HangulToQwerty(hangul)
+}

@@ -54,7 +54,11 @@ func main() {
     hangul := dkssud.QwertyToHangul("rkskekfk")
     fmt.Println(hangul) // 출력: "가나다라"
 
-    hangul := dkssud.QwertyToHangul("rjRlRkwldii")
+    // 또는 (QwertyToHangul 랑 같음)
+    hangul = dkssud.쿼티("rkskekfk")
+    fmt.Println(hangul) // 출력: "가나다라"
+
+    hangul = dkssud.QwertyToHangul("rjRlRkwldii")
     fmt.Println(hangul) // 출력: "거끼까지야ㅑ"
 }
 ```
@@ -69,6 +73,10 @@ import "github.com/Alfex4936/dkssud"
 func main() {
     qwerty := dkssud.HangulToQwerty("안녕하세요")
     fmt.Println(qwerty) // 출력: "dkssudgktpdy"
+
+    // 또는 (HangulToQwerty 랑 같음)
+    qwerty = dkssud.한글("안녕하세요")
+    fmt.Println(hangul) // 출력: "dkssudgktpdy"
 
     qwerty = dkssud.HangulToQwerty("뮻ㅇ")
     fmt.Println(qwerty) // 출력: "abcd"
