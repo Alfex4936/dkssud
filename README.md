@@ -29,7 +29,7 @@ import "github.com/Alfex4936/dkssud"
 
 func main() {
     result := dkssud.QwertyToHangul("dkssud")
-    fmt.Println(result) // 출력: "dkssud"
+    fmt.Println(result) // 출력: "안녕"
 }
 ```
 

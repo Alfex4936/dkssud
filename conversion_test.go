@@ -44,6 +44,7 @@ func TestHangulToQwerty(t *testing.T) {
 		{"뮻ㅇ", "abcd"},            // Simple consonants
 		{"123", "123"},            // Numbers should remain unchanged
 		{"심", "tla"},              // Testing with complex consonant combinations
+		{"안녕", "dkssud"},
 	}
 
 	for _, tt := range tests {
