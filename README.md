@@ -10,7 +10,7 @@
 [![GoDoc](https://pkg.go.dev/badge/github.com/Alfex4936/dkssud.svg)](https://pkg.go.dev/github.com//Alfex4936/dkssud)
 [![codecov](https://codecov.io/gh/Alfex4936/dkssud/graph/badge.svg?token=PYJT7QQ4BW)](https://codecov.io/gh/Alfex4936/dkssud)
 
-QWERTY 키보드용 한국어/영어 간 매핑 프로그램입니다.
+QWERTY 키보드용 한국어/영어 간 매핑 라이브러리입니다.
 
 QWERTY 키보드에서 한글을 입력하거나, 반대로 영어로 변환할 수 있습니다.
 
@@ -83,3 +83,20 @@ func main() {
 }
 ```
 
+### 유틸리티
+```go
+import "github.com/Alfex4936/dkssud"
+
+func main() {
+    // QWERTY 한글인지 간단한 확인
+    isQwerty := dkssud.IsQwertyHangul("안녕하세요") // false - 한글이 포함되어 있으므로 QWERTY 한글이 아님
+    isQwerty = dkssud.IsQwertyHangul("dkssudgktpdy") // true - QWERTY로 입력된 한글로 인식됨
+    isQwerty = dkssud.IsQwertyHangul("dks녕gktpdy") // false - 한글이 포함되어 있으므로 QWERTY 한글이 아님
+    isQwerty = dkssud.IsQwertyHangul("hello there") // false - 알고리즘 한계, 영단어면 true
+
+    // 두 문자가 한글 결합 가능한지 확인
+    isAttachable := dkssud.IsAttachAvailable('r', 'k') // 2 - 'r'과 'k'는 자음과 모음으로 결합 가능
+    isAttachable = dkssud.IsAttachAvailable('k', 'o') // 0 - 모 + 모, 결합 불가
+    isAttachable = dkssud.IsAttachAvailable('k', 'r') // 4 - 모 + 자
+}
+```

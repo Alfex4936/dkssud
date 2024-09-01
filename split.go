@@ -67,27 +67,27 @@ func splitEn(input string) [][]string {
 			continue
 		}
 
-		if currentIdx+shift+1 < len(input) && isAttachAvailable(input[currentIdx+shift], input[currentIdx+shift+1]) == 2 {
+		if currentIdx+shift+1 < len(input) && IsAttachAvailable(input[currentIdx+shift], input[currentIdx+shift+1]) == 2 {
 			shift++
 			combination += M
 
-			if currentIdx+shift+1 < len(input) && isAttachAvailable(input[currentIdx+shift], input[currentIdx+shift+1]) == 3 {
+			if currentIdx+shift+1 < len(input) && IsAttachAvailable(input[currentIdx+shift], input[currentIdx+shift+1]) == 3 {
 				shift++
 				combination += M
 			}
 
-			if currentIdx+shift+1 < len(input) && isAttachAvailable(input[currentIdx+shift], input[currentIdx+shift+1]) == 4 {
+			if currentIdx+shift+1 < len(input) && IsAttachAvailable(input[currentIdx+shift], input[currentIdx+shift+1]) == 4 {
 				shift++
 				combination += B
 
 				if currentIdx+shift+1 < len(input) {
-					attachment3 := isAttachAvailable(input[currentIdx+shift], input[currentIdx+shift+1])
+					attachment3 := IsAttachAvailable(input[currentIdx+shift], input[currentIdx+shift+1])
 					if attachment3 == 5 {
 						if currentIdx+shift+2 == len(input) {
 							combination += B
 						} else if currentIdx+shift+2 < len(input) {
 							shift++
-							attachment4 := isAttachAvailable(input[currentIdx+shift], input[currentIdx+shift+1])
+							attachment4 := IsAttachAvailable(input[currentIdx+shift], input[currentIdx+shift+1])
 							if attachment4 == 2 {
 								// 자 + 자 + 모
 							} else {
