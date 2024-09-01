@@ -1,10 +1,18 @@
 # dkssud: QWERTY 한영 매핑 프로그램
 
+<p align="center">
+  <img width="300" src="https://github.com/user-attachments/assets/c09a64c8-277d-4a56-ab25-f93f2d226fb4" alt="GDG"/></br>
+  <span style="font-size:12px; color:grey;">logo from Google (GDG)</span>
+</p>
+
+---
+
 QWERTY 키보드용 한국어/영어 간 매핑 프로그램입니다.
 
 QWERTY 키보드에서 한글을 입력하거나, 반대로 영어로 변환할 수 있습니다.
 
 이 라이브러리는 [gksdudaovld 한영매핑](https://github.com/ForestHouse2316/gksdudaovld) Python 라이브러리에서 영감을 받아 제작되었습니다.
+
 
 > [!NOTE]
 > dkssud 은 '안녕'을 영어로 치면 나옵니다.

@@ -35,6 +35,7 @@ jobs:
           godoc -http=:6060 &
 
   release:
+    permissions: write-all
     name: Publish Release
     runs-on: ubuntu-latest
     needs: build
