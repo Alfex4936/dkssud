@@ -7,6 +7,8 @@
 
 ---
 
+[![GoDoc](https://pkg.go.dev/badge/github.com/Alfex4936/dkssud.svg)](https://pkg.go.dev/github.com//Alfex4936/dkssud)
+
 QWERTY 키보드용 한국어/영어 간 매핑 프로그램입니다.
 
 QWERTY 키보드에서 한글을 입력하거나, 반대로 영어로 변환할 수 있습니다.
