@@ -8,6 +8,7 @@
 ---
 
 [![GoDoc](https://pkg.go.dev/badge/github.com/Alfex4936/dkssud.svg)](https://pkg.go.dev/github.com//Alfex4936/dkssud)
+[![codecov](https://codecov.io/gh/Alfex4936/dkssud/graph/badge.svg?token=PYJT7QQ4BW)](https://codecov.io/gh/Alfex4936/dkssud)
 
 QWERTY 키보드용 한국어/영어 간 매핑 프로그램입니다.
 
