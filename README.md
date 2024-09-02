@@ -1,7 +1,7 @@
 # dkssud: QWERTY 한영 매핑 프로그램
 
 <p align="center">
-  <img width="300" src="https://github.com/user-attachments/assets/52ca9668-17a8-4f12-88e0-11a1db6841e2" alt="GDG"/></br>
+  <img width="300" src="https://github.com/user-attachments/assets/95f3369b-cdd2-4297-9ec4-e9ad48799ff5" alt="GDG"/></br>
 </p>
 
 ---
