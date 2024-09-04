@@ -1,8 +1,7 @@
 # dkssud: QWERTY 한영 매핑 프로그램
 
 <p align="center">
-  <img width="300" src="https://github.com/user-attachments/assets/c09a64c8-277d-4a56-ab25-f93f2d226fb4" alt="GDG"/></br>
-  <span style="font-size:12px; color:grey;">logo from Google (GDG)</span>
+  <img width="300" src="https://github.com/user-attachments/assets/95f3369b-cdd2-4297-9ec4-e9ad48799ff5" alt="GDG"/></br>
 </p>
 
 ---
