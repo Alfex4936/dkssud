@@ -40,14 +40,22 @@ func splitEn(input string) [][]string {
 		return nil
 	}
 
-	// Convert all uppercase letters to lowercase, except for specific ones like T, R, E, Q
-	for _, c := range enUpper {
-		if !strings.ContainsAny(string(c), "TREQ") {
-			input = strings.ReplaceAll(input, string(c), strings.ToLower(string(c)))
+	// Use strings.Builder for efficient string manipulation
+	var sb strings.Builder
+	sb.Grow(len(input)) // Preallocate space
+
+	// Iterate through input and convert uppercase letters to lowercase, except for T, R, E, Q
+	for _, c := range input {
+		if !strings.ContainsRune("TREQ", c) && unicode.IsUpper(c) {
+			sb.WriteRune(unicode.ToLower(c))
+		} else {
+			sb.WriteRune(c)
 		}
 	}
+	processedInput := sb.String()
 
-	var separated [][]string
+	separated := make([][]string, 0, len(processedInput)) // Preallocate memory
+
 	jump := 0
 
 	for i := 0; i < len(input); i++ {
@@ -104,23 +112,38 @@ func splitEn(input string) [][]string {
 		// Based on the combination, append the appropriate slices
 		switch combination {
 		case T:
-			separated = append(separated, []string{string(input[currentIdx])})
+			separated = append(separated, createSlice(input, currentIdx, 1)) // T
 		case TM:
-			separated = append(separated, []string{string(input[currentIdx]), string(input[currentIdx+1])})
+			separated = append(separated, createSlice(input, currentIdx, 1, 1)) // TM
 		case TMM:
-			separated = append(separated, []string{string(input[currentIdx]), input[currentIdx+1 : currentIdx+3]})
+			separated = append(separated, createSlice(input, currentIdx, 1, 2)) // TMM
 		case TMB:
-			separated = append(separated, []string{string(input[currentIdx]), string(input[currentIdx+1]), string(input[currentIdx+2])})
+			separated = append(separated, createSlice(input, currentIdx, 1, 1, 1)) // TMB
 		case TMMB:
-			separated = append(separated, []string{string(input[currentIdx]), input[currentIdx+1 : currentIdx+3], string(input[currentIdx+3])})
+			separated = append(separated, createSlice(input, currentIdx, 1, 2, 1)) // TMMB
 		case TMBB:
-			separated = append(separated, []string{string(input[currentIdx]), string(input[currentIdx+1]), input[currentIdx+2 : currentIdx+4]})
+			separated = append(separated, createSlice(input, currentIdx, 1, 1, 2)) // TMBB
 		case TMMBB:
-			separated = append(separated, []string{string(input[currentIdx]), input[currentIdx+1 : currentIdx+3], input[currentIdx+3 : currentIdx+5]})
+			separated = append(separated, createSlice(input, currentIdx, 1, 2, 2)) // TMMBB
 		}
 
 		jump = combLen[combination] - 1
 	}
 
 	return separated
+}
+
+// Helper function to create the slice based on the combination and range
+func createSlice(input string, currentIdx int, sliceLengths ...int) []string {
+	result := make([]string, len(sliceLengths))
+	start := currentIdx
+	for i, length := range sliceLengths {
+		if length == 1 {
+			result[i] = string(input[start]) // Single character
+		} else {
+			result[i] = input[start : start+length] // Sub-slice for multi-character strings
+		}
+		start += length
+	}
+	return result
 }

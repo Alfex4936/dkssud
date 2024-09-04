@@ -2,9 +2,26 @@ package dkssud
 
 // Constants for Hangul components and their English mappings
 var (
-	koTopEn   = []string{"r", "R", "s", "e", "E", "f", "a", "q", "Q", "t", "T", "d", "w", "W", "c", "z", "x", "v", "g"}
-	koMidEn   = []string{"k", "o", "i", "O", "j", "p", "u", "P", "h", "hk", "ho", "hl", "y", "n", "nj", "np", "nl", "b", "m", "ml", "l"}
-	koBotEn   = []string{"", "r", "R", "rt", "s", "sw", "sg", "e", "f", "fr", "fa", "fq", "ft", "fx", "fv", "fg", "a", "q", "qt", "t", "T", "d", "w", "c", "z", "x", "v", "g"}
+	koTopEn = []string{"r", "R", "s", "e", "E", "f", "a", "q", "Q", "t", "T", "d", "w", "W", "c", "z", "x", "v", "g"}
+	koMidEn = []string{"k", "o", "i", "O", "j", "p", "u", "P", "h", "hk", "ho", "hl", "y", "n", "nj", "np", "nl", "b", "m", "ml", "l"}
+	koBotEn = []string{"", "r", "R", "rt", "s", "sw", "sg", "e", "f", "fr", "fa", "fq", "ft", "fx", "fv", "fg", "a", "q", "qt", "t", "T", "d", "w", "c", "z", "x", "v", "g"}
+
+	koTopEnSet = map[string]struct{}{
+		"r": {}, "R": {}, "s": {}, "e": {}, "E": {}, "f": {}, "a": {}, "q": {}, "Q": {},
+		"t": {}, "T": {}, "d": {}, "w": {}, "W": {}, "c": {}, "z": {}, "x": {}, "v": {}, "g": {},
+	}
+
+	koMidEnSet = map[string]struct{}{
+		"k": {}, "o": {}, "i": {}, "O": {}, "j": {}, "p": {}, "u": {}, "P": {}, "h": {}, "hk": {},
+		"ho": {}, "hl": {}, "y": {}, "n": {}, "nj": {}, "np": {}, "nl": {}, "b": {}, "m": {}, "ml": {}, "l": {},
+	}
+
+	koBotEnSet = map[string]struct{}{
+		"": {}, "r": {}, "R": {}, "rt": {}, "s": {}, "sw": {}, "sg": {}, "e": {}, "f": {}, "fr": {},
+		"fa": {}, "fq": {}, "ft": {}, "fx": {}, "fv": {}, "fg": {}, "a": {}, "q": {}, "qt": {}, "t": {},
+		"T": {}, "d": {}, "w": {}, "c": {}, "z": {}, "x": {}, "v": {}, "g": {},
+	}
+
 	enUpper   = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	rawMapper = []string{"r", "R", "rt", "s", "sw", "sg", "e", "E", "f", "fr", "fa", "fq", "ft", "fx", "fv", "fg", "a", "q", "Q", "qt", "t", "T", "d", "w", "W", "c", "z", "x", "v", "g", "k", "o", "i", "O", "j", "p", "u", "P", "h", "hk", "ho", "hl", "y", "n", "nj", "np", "nl", "b", "m", "ml", "l"}
 

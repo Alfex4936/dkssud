@@ -26,7 +26,8 @@ import (
 //   - A string containing the corresponding Hangul characters.
 func QwertyToHangul(input string) string {
 	charGroups := splitEn(input)
-	var convertedString strings.Builder
+	convertedString := strings.Builder{}
+	convertedString.Grow(len(input)) // Preallocate memory
 
 	for _, charGroup := range charGroups {
 		if len(charGroup) == 1 {
@@ -42,7 +43,7 @@ func QwertyToHangul(input string) string {
 
 		for j, char := range charGroup {
 			r := rune(char[0])
-			if char == " " || unicode.IsDigit(r) || !unicode.IsLetter(r) {
+			if !unicode.IsLetter(r) || unicode.IsDigit(r) || char == " " {
 				convertedString.WriteString(char)
 				break
 			}

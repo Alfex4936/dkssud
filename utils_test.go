@@ -19,7 +19,11 @@ func TestContains(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.item, func(t *testing.T) {
-			got := contains(tt.slice, tt.item)
+			// Convert slice to map
+			set := sliceToMap(tt.slice)
+
+			// Test the contains function
+			got := contains(set, tt.item)
 			if got != tt.want {
 				t.Errorf("contains(%v, %q) = %v; want %v", tt.slice, tt.item, got, tt.want)
 			}
@@ -112,4 +116,13 @@ func TestIsQwertyHangul(t *testing.T) {
 			}
 		})
 	}
+}
+
+// sliceToMap converts a slice of strings into a map[string]struct{} for testing.
+func sliceToMap(slice []string) map[string]struct{} {
+	set := make(map[string]struct{}, len(slice))
+	for _, s := range slice {
+		set[s] = struct{}{}
+	}
+	return set
 }

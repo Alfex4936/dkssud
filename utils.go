@@ -2,14 +2,10 @@ package dkssud
 
 import "unicode"
 
-// contains checks if a slice contains a specific string.
-func contains(slice []string, item string) bool {
-	for _, val := range slice {
-		if val == item {
-			return true
-		}
-	}
-	return false
+// contains checks if a map contains a specific string (O(1) lookup).
+func contains(set map[string]struct{}, item string) bool {
+	_, exists := set[item]
+	return exists
 }
 
 // Helper function to find the index of a string in a slice
@@ -49,20 +45,23 @@ func indexInSlice(slice []string, item string) int {
 // Returns:
 // - int: 문자의 결합 가능 여부를 나타내는 값. 0은 결합 불가, 2는 자 + 모, 3은 복모음, 4는 모 + 자, 5는 겹받침을 의미합니다.
 func IsAttachAvailable(i, l byte) int {
+	istr := string(i)
+	lstr := string(l)
+
 	switch {
-	case contains(koTopEn, string(i)) && contains(koMidEn, string(l)):
+	case contains(koTopEnSet, istr) && contains(koMidEnSet, lstr):
 		// 자 + 모 (Consonant + Vowel)
 		return 2
-	case contains(koMidEn, string(i)) && contains(koMidEn, string(l)):
+	case contains(koMidEnSet, istr) && contains(koMidEnSet, lstr):
 		// 모 + 모 (Composite Vowel)
-		if contains(koMidEn, string([]byte{i, l})) {
+		if contains(koMidEnSet, string([]byte{i, l})) {
 			return 3
 		}
 		return 0
-	case contains(koMidEn, string(i)) && contains(koBotEn, string(l)):
+	case contains(koMidEnSet, istr) && contains(koBotEnSet, lstr):
 		// 모 + 자 (Vowel + Consonant)
 		return 4
-	case contains(koBotEn, string([]byte{i, l})):
+	case contains(koBotEnSet, string([]byte{i, l})):
 		// 자 + 자 (종) (Double Consonant)
 		return 5
 	default:
