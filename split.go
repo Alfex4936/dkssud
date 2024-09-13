@@ -96,11 +96,9 @@ func splitEn(input string) [][]string {
 						} else if currentIdx+shift+2 < len(input) {
 							shift++
 							attachment4 := IsAttachAvailable(input[currentIdx+shift], input[currentIdx+shift+1])
-							if attachment4 == 2 {
-								// 자 + 자 + 모
-							} else {
+							if attachment4 != 2 {
 								combination += B
-							}
+							} // non 자 + 자 + 모
 						}
 					} else if attachment3 == 2 {
 						combination -= B // Remove 'B'

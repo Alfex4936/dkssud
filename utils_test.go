@@ -1,31 +1,62 @@
 package dkssud
 
 import (
+	"fmt"
 	"testing"
 )
 
-// TestContains checks the functionality of the contains function.
-func TestContains(t *testing.T) {
+// TestContainsByte checks the functionality of the containsByte function.
+func TestContainsByte(t *testing.T) {
 	tests := []struct {
-		slice []string
-		item  string
-		want  bool
+		set  map[byte]struct{}
+		item byte
+		want bool
 	}{
-		{[]string{"a", "b", "c"}, "b", true},
-		{[]string{"a", "b", "c"}, "d", false},
-		{[]string{}, "a", false},
-		{[]string{"a", "A"}, "A", true},
+		// Test case where the item is present in the set
+		{map[byte]struct{}{'a': {}, 'b': {}, 'c': {}}, 'b', true},
+		// Test case where the item is not present in the set
+		{map[byte]struct{}{'a': {}, 'b': {}, 'c': {}}, 'd', false},
+		// Test case with an empty set
+		{map[byte]struct{}{}, 'a', false},
+		// Test case with similar characters to check case sensitivity
+		{map[byte]struct{}{'a': {}, 'A': {}}, 'A', true},
 	}
 
 	for _, tt := range tests {
-		t.Run(tt.item, func(t *testing.T) {
-			// Convert slice to map
-			set := sliceToMap(tt.slice)
-
-			// Test the contains function
-			got := contains(set, tt.item)
+		t.Run(fmt.Sprintf("Item: %q", tt.item), func(t *testing.T) {
+			got := containsByte(tt.set, tt.item)
 			if got != tt.want {
-				t.Errorf("contains(%v, %q) = %v; want %v", tt.slice, tt.item, got, tt.want)
+				t.Errorf("containsByte(%v, %q) = %v; want %v", tt.set, tt.item, got, tt.want)
+			}
+		})
+	}
+}
+
+// TestContainsString checks the functionality of the containsString function.
+func TestContainsString(t *testing.T) {
+	tests := []struct {
+		set  map[string]struct{}
+		item string
+		want bool
+	}{
+		// Test case where the item is present in the set
+		{map[string]struct{}{"a": {}, "b": {}, "c": {}}, "b", true},
+		// Test case where the item is not present in the set
+		{map[string]struct{}{"a": {}, "b": {}, "c": {}}, "d", false},
+		// Test case with an empty set
+		{map[string]struct{}{}, "a", false},
+		// Test case with similar strings to check case sensitivity
+		{map[string]struct{}{"a": {}, "A": {}}, "A", true},
+		// Test case with multi-character strings
+		{map[string]struct{}{"hk": {}, "ho": {}, "hl": {}}, "ho", true},
+		{map[string]struct{}{"hk": {}, "ho": {}, "hl": {}}, "ha", false},
+	}
+
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("Item: %q", tt.item), func(t *testing.T) {
+			got := containsString(tt.set, tt.item)
+			if got != tt.want {
+				t.Errorf("containsString(%v, %q) = %v; want %v", tt.set, tt.item, got, tt.want)
 			}
 		})
 	}

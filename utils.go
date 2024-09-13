@@ -2,8 +2,12 @@ package dkssud
 
 import "unicode"
 
-// contains checks if a map contains a specific string (O(1) lookup).
-func contains(set map[string]struct{}, item string) bool {
+func containsByte(set map[byte]struct{}, item byte) bool {
+	_, exists := set[item]
+	return exists
+}
+
+func containsString(set map[string]struct{}, item string) bool {
 	_, exists := set[item]
 	return exists
 }
@@ -45,29 +49,58 @@ func indexInSlice(slice []string, item string) int {
 // Returns:
 // - int: 문자의 결합 가능 여부를 나타내는 값. 0은 결합 불가, 2는 자 + 모, 3은 복모음, 4는 모 + 자, 5는 겹받침을 의미합니다.
 func IsAttachAvailable(i, l byte) int {
-	istr := string(i)
-	lstr := string(l)
-
-	switch {
-	case contains(koTopEnSet, istr) && contains(koMidEnSet, lstr):
-		// 자 + 모 (Consonant + Vowel)
-		return 2
-	case contains(koMidEnSet, istr) && contains(koMidEnSet, lstr):
-		// 모 + 모 (Composite Vowel)
-		if contains(koMidEnSet, string([]byte{i, l})) {
-			return 3
+	// Check for Consonant + Vowel (자 + 모)
+	if containsByte(koTopEnSet, i) {
+		if containsByte(koMidEnSetSingleChar, l) {
+			// Both are single-byte characters
+			return 2
+		} else if containsString(koMidEnSetMultiChar, string(l)) {
+			// 'l' is a multi-character vowel
+			return 2
 		}
-		return 0
-	case contains(koMidEnSet, istr) && contains(koBotEnSet, lstr):
-		// 모 + 자 (Vowel + Consonant)
-		return 4
-	case contains(koBotEnSet, string([]byte{i, l})):
-		// 자 + 자 (종) (Double Consonant)
-		return 5
-	default:
-		// If none of the above, they are not attachable
-		return 0
 	}
+
+	// Check for Vowel + Vowel (Composite Vowel) (모 + 모)
+	if containsByte(koMidEnSetSingleChar, i) {
+		if containsByte(koMidEnSetSingleChar, l) {
+			combined := string([]byte{i, l})
+			if containsString(koMidEnSetMultiChar, combined) {
+				return 3
+			}
+		} else if containsString(koMidEnSetMultiChar, string(l)) {
+			combined := string(i) + string(l)
+			if containsString(koMidEnSetMultiChar, combined) {
+				return 3
+			}
+		}
+	} else if containsString(koMidEnSetMultiChar, string(i)) {
+		if containsByte(koMidEnSetSingleChar, l) || containsString(koMidEnSetMultiChar, string(l)) {
+			combined := string(i) + string(l)
+			if containsString(koMidEnSetMultiChar, combined) {
+				return 3
+			}
+		}
+	}
+
+	// Check for Vowel + Consonant (모 + 자)
+	if containsByte(koMidEnSetSingleChar, i) || containsString(koMidEnSetMultiChar, string(i)) {
+		if containsByte(koBotEnSetSingleChar, l) {
+			return 4
+		} else if containsString(koBotEnSetMultiChar, string(l)) {
+			return 4
+		}
+	}
+
+	// Check for Double Consonant (자 + 자) in the final position
+	if containsByte(koBotEnSetSingleChar, i) || containsString(koBotEnSetMultiChar, string(i)) {
+		combined := string([]byte{i, l})
+		if containsString(koBotEnSetMultiChar, combined) {
+			return 5
+		}
+	}
+
+	// If none of the above, they are not attachable
+	return 0
 }
 
 // IsQwertyHangul 함수는 입력된 문자열이 QWERTY 키보드에서 한글을 입력한 것으로 보이는지를 확인합니다.

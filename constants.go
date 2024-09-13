@@ -6,23 +6,36 @@ var (
 	koMidEn = []string{"k", "o", "i", "O", "j", "p", "u", "P", "h", "hk", "ho", "hl", "y", "n", "nj", "np", "nl", "b", "m", "ml", "l"}
 	koBotEn = []string{"", "r", "R", "rt", "s", "sw", "sg", "e", "f", "fr", "fa", "fq", "ft", "fx", "fv", "fg", "a", "q", "qt", "t", "T", "d", "w", "c", "z", "x", "v", "g"}
 
-	koTopEnSet = map[string]struct{}{
-		"r": {}, "R": {}, "s": {}, "e": {}, "E": {}, "f": {}, "a": {}, "q": {}, "Q": {},
-		"t": {}, "T": {}, "d": {}, "w": {}, "W": {}, "c": {}, "z": {}, "x": {}, "v": {}, "g": {},
+	// koTopEnSet contains consonants (자음) as single-byte characters.
+	koTopEnSet = map[byte]struct{}{
+		'r': {}, 'R': {}, 's': {}, 'e': {}, 'E': {}, 'f': {}, 'a': {}, 'q': {}, 'Q': {},
+		't': {}, 'T': {}, 'd': {}, 'w': {}, 'W': {}, 'c': {}, 'z': {}, 'x': {}, 'v': {}, 'g': {},
 	}
 
-	koMidEnSet = map[string]struct{}{
-		"k": {}, "o": {}, "i": {}, "O": {}, "j": {}, "p": {}, "u": {}, "P": {}, "h": {}, "hk": {},
-		"ho": {}, "hl": {}, "y": {}, "n": {}, "nj": {}, "np": {}, "nl": {}, "b": {}, "m": {}, "ml": {}, "l": {},
+	// koMidEnSetSingleChar contains single-character vowels (단모음).
+	koMidEnSetSingleChar = map[byte]struct{}{
+		'k': {}, 'o': {}, 'i': {}, 'O': {}, 'j': {}, 'p': {}, 'u': {}, 'P': {}, 'h': {},
+		'y': {}, 'n': {}, 'b': {}, 'm': {}, 'l': {},
 	}
 
-	koBotEnSet = map[string]struct{}{
-		"": {}, "r": {}, "R": {}, "rt": {}, "s": {}, "sw": {}, "sg": {}, "e": {}, "f": {}, "fr": {},
-		"fa": {}, "fq": {}, "ft": {}, "fx": {}, "fv": {}, "fg": {}, "a": {}, "q": {}, "qt": {}, "t": {},
-		"T": {}, "d": {}, "w": {}, "c": {}, "z": {}, "x": {}, "v": {}, "g": {},
+	// koMidEnSetMultiChar contains multi-character vowels (이중모음).
+	koMidEnSetMultiChar = map[string]struct{}{
+		"hk": {}, "ho": {}, "hl": {},
+		"nj": {}, "np": {}, "nl": {}, "ml": {},
 	}
 
-	enUpper   = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	// koBotEnSetSingleChar contains single-character consonants used in the final position (받침).
+	koBotEnSetSingleChar = map[byte]struct{}{
+		'r': {}, 'R': {}, 's': {}, 'e': {}, 'E': {}, 'f': {}, 'a': {}, 'q': {}, 'Q': {},
+		't': {}, 'T': {}, 'd': {}, 'w': {}, 'W': {}, 'c': {}, 'z': {}, 'x': {}, 'v': {}, 'g': {},
+	}
+
+	// koBotEnSetMultiChar contains multi-character consonants used in the final position (겹받침).
+	koBotEnSetMultiChar = map[string]struct{}{
+		"rt": {}, "sw": {}, "sg": {}, "fr": {}, "fa": {}, "fq": {}, "ft": {}, "fx": {}, "fv": {}, "fg": {},
+		"qt": {}, "df": {}, "cz": {}, "xg": {}, // Add other multi-character final consonants as necessary
+	}
+
 	rawMapper = []string{"r", "R", "rt", "s", "sw", "sg", "e", "E", "f", "fr", "fa", "fq", "ft", "fx", "fv", "fg", "a", "q", "Q", "qt", "t", "T", "d", "w", "W", "c", "z", "x", "v", "g", "k", "o", "i", "O", "j", "p", "u", "P", "h", "hk", "ho", "hl", "y", "n", "nj", "np", "nl", "b", "m", "ml", "l"}
 
 	// combLen returns the Korean character's length in the view of English characters (e.g., T -> 1, TMMBB -> 5)
