@@ -17,6 +17,7 @@ func TestQwertyToHangul(t *testing.T) {
 		{"rjRlRkwldii", "거끼까지야ㅑ"}, // Combination with uppercase and lowercase
 		{"abcd", "뮻ㅇ"},            // Simple consonants
 		{"123", "123"},            // Numbers should remain unchanged
+		{"1", "1"},                // Numbers should remain unchanged
 		{"tla", "심"},              // Testing with complex consonant combinations
 	}
 

@@ -52,12 +52,10 @@ func IsAttachAvailable(i, l byte) int {
 	// Check for Consonant + Vowel (자 + 모)
 	if containsByte(koTopEnSet, i) {
 		if containsByte(koMidEnSetSingleChar, l) {
-			// Both are single-byte characters
-			return 2
-		} else if containsString(koMidEnSetMultiChar, string(l)) {
-			// 'l' is a multi-character vowel
 			return 2
 		}
+		// Since 'l' is a byte, 'string(l)' is a single-character string
+		// To reach this code, 'l' must be a single byte that represents a multi-character vowel
 	}
 
 	// Check for Vowel + Vowel (Composite Vowel) (모 + 모)
@@ -67,26 +65,12 @@ func IsAttachAvailable(i, l byte) int {
 			if containsString(koMidEnSetMultiChar, combined) {
 				return 3
 			}
-		} else if containsString(koMidEnSetMultiChar, string(l)) {
-			combined := string(i) + string(l)
-			if containsString(koMidEnSetMultiChar, combined) {
-				return 3
-			}
-		}
-	} else if containsString(koMidEnSetMultiChar, string(i)) {
-		if containsByte(koMidEnSetSingleChar, l) || containsString(koMidEnSetMultiChar, string(l)) {
-			combined := string(i) + string(l)
-			if containsString(koMidEnSetMultiChar, combined) {
-				return 3
-			}
 		}
 	}
 
 	// Check for Vowel + Consonant (모 + 자)
 	if containsByte(koMidEnSetSingleChar, i) || containsString(koMidEnSetMultiChar, string(i)) {
 		if containsByte(koBotEnSetSingleChar, l) {
-			return 4
-		} else if containsString(koBotEnSetMultiChar, string(l)) {
 			return 4
 		}
 	}

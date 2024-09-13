@@ -66,8 +66,9 @@ func TestSplitEn(t *testing.T) {
 		input string
 		want  [][]string
 	}{
-		{"rkskekfk", [][]string{{"r", "k"}, {"s", "k"}, {"e", "k"}, {"f", "k"}}},                                                     // 가나다라
-		{"Rkdlfk", [][]string{{"R", "k"}, {"d", "l"}, {"f", "k"}}},                                                                   // 까이라
+		{"rkskekfk", [][]string{{"r", "k"}, {"s", "k"}, {"e", "k"}, {"f", "k"}}}, // 가나다라
+		{"Rkdlfk", [][]string{{"R", "k"}, {"d", "l"}, {"f", "k"}}},               // 까이라
+		{"Z", [][]string{{"z"}}},
 		{"rk zzzz ekfrqnpfr", [][]string{{"r", "k"}, {" "}, {"z"}, {"z"}, {"z"}, {"z"}, {" "}, {"e", "k", "fr"}, {"q", "np", "fr"}}}, // 가 ㅋㅋㅋㅋ 닭뷁
 		{"rjRlRkwldii", [][]string{{"r", "j"}, {"R", "l"}, {"R", "k"}, {"w", "l"}, {"d", "i"}, {"i"}}},
 		{" ", [][]string{{" "}}},

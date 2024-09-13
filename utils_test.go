@@ -148,12 +148,3 @@ func TestIsQwertyHangul(t *testing.T) {
 		})
 	}
 }
-
-// sliceToMap converts a slice of strings into a map[string]struct{} for testing.
-func sliceToMap(slice []string) map[string]struct{} {
-	set := make(map[string]struct{}, len(slice))
-	for _, s := range slice {
-		set[s] = struct{}{}
-	}
-	return set
-}

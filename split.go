@@ -2,7 +2,6 @@ package dkssud
 
 import (
 	"strings"
-	"unicode"
 )
 
 // splitKo disassembles Korean characters into their indexes in the QWERTY keyboard map.
@@ -40,25 +39,23 @@ func splitEn(input string) [][]string {
 		return nil
 	}
 
-	// Use strings.Builder for efficient string manipulation
+	// Convert uppercase letters to lowercase, except for T, R, E, Q
 	var sb strings.Builder
-	sb.Grow(len(input)) // Preallocate space
-
-	// Iterate through input and convert uppercase letters to lowercase, except for T, R, E, Q
-	for _, c := range input {
-		if !strings.ContainsRune("TREQ", c) && unicode.IsUpper(c) {
-			sb.WriteRune(unicode.ToLower(c))
-		} else {
-			sb.WriteRune(c)
+	sb.Grow(len(input))
+	for i := 0; i < len(input); i++ {
+		c := input[i]
+		if c >= 'A' && c <= 'Z' && c != 'T' && c != 'R' && c != 'E' && c != 'Q' {
+			c += 'a' - 'A'
 		}
+		sb.WriteByte(c)
 	}
 	processedInput := sb.String()
 
-	separated := make([][]string, 0, len(processedInput)) // Preallocate memory
-
+	separated := make([][]string, 0, len(processedInput))
+	inputLen := len(processedInput)
 	jump := 0
 
-	for i := 0; i < len(input); i++ {
+	for i := 0; i < inputLen; i++ {
 		if jump > 0 {
 			jump--
 			continue
@@ -67,63 +64,69 @@ func splitEn(input string) [][]string {
 		shift := 0
 		combination := T
 		currentIdx := i
+		c := processedInput[i]
 
-		// Handle non-letter and non-digit characters first
-		r := rune(input[i])
-		if !unicode.IsLetter(r) || unicode.IsDigit(r) || input[i] == ' ' {
-			separated = append(separated, []string{string(input[i])})
+		if !isLetter(c) || isDigit(c) || c == ' ' {
+			separated = append(separated, []string{string(c)})
 			continue
 		}
 
-		if currentIdx+shift+1 < len(input) && IsAttachAvailable(input[currentIdx+shift], input[currentIdx+shift+1]) == 2 {
-			shift++
-			combination += M
+		// Attachment checks with caching
+		idx := currentIdx + shift
+		idxNext := idx + 1
 
-			if currentIdx+shift+1 < len(input) && IsAttachAvailable(input[currentIdx+shift], input[currentIdx+shift+1]) == 3 {
+		if idxNext < inputLen {
+			attachType := IsAttachAvailable(processedInput[idx], processedInput[idxNext])
+			if attachType == 2 {
 				shift++
 				combination += M
-			}
 
-			if currentIdx+shift+1 < len(input) && IsAttachAvailable(input[currentIdx+shift], input[currentIdx+shift+1]) == 4 {
-				shift++
-				combination += B
+				idx = currentIdx + shift
+				idxNext = idx + 1
 
-				if currentIdx+shift+1 < len(input) {
-					attachment3 := IsAttachAvailable(input[currentIdx+shift], input[currentIdx+shift+1])
-					if attachment3 == 5 {
-						if currentIdx+shift+2 == len(input) {
-							combination += B
-						} else if currentIdx+shift+2 < len(input) {
-							shift++
-							attachment4 := IsAttachAvailable(input[currentIdx+shift], input[currentIdx+shift+1])
-							if attachment4 != 2 {
-								combination += B
-							} // non 자 + 자 + 모
+				if idxNext < inputLen {
+					attachType = IsAttachAvailable(processedInput[idx], processedInput[idxNext])
+					if attachType == 3 {
+						shift++
+						combination += M
+						idx = currentIdx + shift
+						idxNext = idx + 1
+					}
+				}
+
+				if idxNext < inputLen {
+					attachType = IsAttachAvailable(processedInput[idx], processedInput[idxNext])
+					if attachType == 4 {
+						shift++
+						combination += B
+						idx = currentIdx + shift
+						idxNext = idx + 1
+
+						if idxNext < inputLen {
+							attachment3 := IsAttachAvailable(processedInput[idx], processedInput[idxNext])
+							if attachment3 == 5 {
+								if idxNext+1 == inputLen {
+									combination += B
+								} else if idxNext+1 < inputLen {
+									shift++
+									idx = currentIdx + shift
+									idxNext = idx + 1
+									attachment4 := IsAttachAvailable(processedInput[idx], processedInput[idxNext])
+									if attachment4 != 2 {
+										combination += B
+									}
+								}
+							} else if attachment3 == 2 {
+								combination -= B
+							}
 						}
-					} else if attachment3 == 2 {
-						combination -= B // Remove 'B'
 					}
 				}
 			}
 		}
 
-		// Based on the combination, append the appropriate slices
-		switch combination {
-		case T:
-			separated = append(separated, createSlice(input, currentIdx, 1)) // T
-		case TM:
-			separated = append(separated, createSlice(input, currentIdx, 1, 1)) // TM
-		case TMM:
-			separated = append(separated, createSlice(input, currentIdx, 1, 2)) // TMM
-		case TMB:
-			separated = append(separated, createSlice(input, currentIdx, 1, 1, 1)) // TMB
-		case TMMB:
-			separated = append(separated, createSlice(input, currentIdx, 1, 2, 1)) // TMMB
-		case TMBB:
-			separated = append(separated, createSlice(input, currentIdx, 1, 1, 2)) // TMBB
-		case TMMBB:
-			separated = append(separated, createSlice(input, currentIdx, 1, 2, 2)) // TMMBB
-		}
+		// Append slices based on combination
+		separated = append(separated, createSliceByCombination(processedInput, currentIdx, combination))
 
 		jump = combLen[combination] - 1
 	}
@@ -132,16 +135,42 @@ func splitEn(input string) [][]string {
 }
 
 // Helper function to create the slice based on the combination and range
-func createSlice(input string, currentIdx int, sliceLengths ...int) []string {
+func createSlice(input string, startIdx int, sliceLengths ...int) []string {
 	result := make([]string, len(sliceLengths))
-	start := currentIdx
+	idx := startIdx
 	for i, length := range sliceLengths {
-		if length == 1 {
-			result[i] = string(input[start]) // Single character
-		} else {
-			result[i] = input[start : start+length] // Sub-slice for multi-character strings
-		}
-		start += length
+		result[i] = input[idx : idx+length]
+		idx += length
 	}
 	return result
+}
+
+func isLetter(c byte) bool {
+	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
+}
+
+func isDigit(c byte) bool {
+	return c >= '0' && c <= '9'
+}
+
+func createSliceByCombination(input string, startIdx int, combination int) []string {
+	switch combination {
+	case T:
+		return createSlice(input, startIdx, 1)
+	case TM:
+		return createSlice(input, startIdx, 1, 1)
+	case TMM:
+		return createSlice(input, startIdx, 1, 2)
+	case TMB:
+		return createSlice(input, startIdx, 1, 1, 1)
+	case TMMB:
+		return createSlice(input, startIdx, 1, 2, 1)
+	case TMBB:
+		return createSlice(input, startIdx, 1, 1, 2)
+	case TMMBB:
+		return createSlice(input, startIdx, 1, 2, 2)
+	default:
+		// Handle unexpected combination
+		return []string{string(input[startIdx])}
+	}
 }
