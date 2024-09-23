@@ -132,6 +132,7 @@ func TestIsQwertyHangul(t *testing.T) {
 		{"123abc한글", false},                  // Mixed digits, letters, and Hangul
 		{"abcd1234efg", true},                // Continuous QWERTY Hangul input
 		{"1234567890", false},                // Only numbers
+		{"rPfyd", true},                      // Contains upper and lower case letters
 		{"", false},                          // Empty string (edge case)
 		{" ", false},                         // Single space (edge case)
 		{"abcdefghijklmnopqrstuvwxyz", true}, // Full alphabet

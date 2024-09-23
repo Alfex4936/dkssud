@@ -38,6 +38,10 @@ var (
 
 	rawMapper = []string{"r", "R", "rt", "s", "sw", "sg", "e", "E", "f", "fr", "fa", "fq", "ft", "fx", "fv", "fg", "a", "q", "Q", "qt", "t", "T", "d", "w", "W", "c", "z", "x", "v", "g", "k", "o", "i", "O", "j", "p", "u", "P", "h", "hk", "ho", "hl", "y", "n", "nj", "np", "nl", "b", "m", "ml", "l"}
 
+	uppercaseLettersToKeep = map[byte]struct{}{
+		'T': {}, 'R': {}, 'E': {}, 'Q': {}, 'P': {}, 'O': {}, 'W': {},
+	}
+
 	// combLen returns the Korean character's length in the view of English characters (e.g., T -> 1, TMMBB -> 5)
 	combLen = map[int]int{
 		T:     1,

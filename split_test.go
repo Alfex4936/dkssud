@@ -71,6 +71,7 @@ func TestSplitEn(t *testing.T) {
 		{"Z", [][]string{{"z"}}},
 		{"rk zzzz ekfrqnpfr", [][]string{{"r", "k"}, {" "}, {"z"}, {"z"}, {"z"}, {"z"}, {" "}, {"e", "k", "fr"}, {"q", "np", "fr"}}}, // 가 ㅋㅋㅋㅋ 닭뷁
 		{"rjRlRkwldii", [][]string{{"r", "j"}, {"R", "l"}, {"R", "k"}, {"w", "l"}, {"d", "i"}, {"i"}}},
+		{"rPfydtl", [][]string{{"r", "P"}, {"f", "y", "d"}, {"t", "l"}}},
 		{" ", [][]string{{" "}}},
 		{"", nil},
 	}

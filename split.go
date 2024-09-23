@@ -39,13 +39,15 @@ func splitEn(input string) [][]string {
 		return nil
 	}
 
-	// Convert uppercase letters to lowercase, except for T, R, E, Q
+	// Convert uppercase letters to lowercase, except for letters in uppercaseLettersToKeep
 	var sb strings.Builder
 	sb.Grow(len(input))
 	for i := 0; i < len(input); i++ {
 		c := input[i]
-		if c >= 'A' && c <= 'Z' && c != 'T' && c != 'R' && c != 'E' && c != 'Q' {
-			c += 'a' - 'A'
+		if c >= 'A' && c <= 'Z' {
+			if _, keep := uppercaseLettersToKeep[c]; !keep {
+				c += 'a' - 'A'
+			}
 		}
 		sb.WriteByte(c)
 	}
