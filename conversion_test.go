@@ -21,6 +21,8 @@ func TestQwertyToHangul(t *testing.T) {
 		{"tla", "심"},              // Testing with complex consonant combinations
 		{"rPfyd", "계룡"},           // Testing with complex consonant combinations
 		{"rOeOeI", "걔댸댜"},         // Testing with complex consonant combinations
+		{"eOrl", "댸기"},            // Testing with complex consonant combinations
+		{"QOWP", "뺴쪠"},            // Testing with complex consonant combinations
 	}
 
 	for _, tt := range tests {
